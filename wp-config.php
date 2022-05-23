@@ -38,6 +38,8 @@ if ($configExtra = getenv_docker('WORDPRESS_CONFIG_EXTRA', '')) {
 	eval($configExtra);
 }
 
+define ( 'WP_CONTENT_DIR', '/persist/') ;
+
 define( 'ABSPATH', __DIR__ . '/wp/' );
 
 require_once ABSPATH . 'wp-settings.php';
