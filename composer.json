@@ -18,6 +18,7 @@
   "require": {
     "php": ">=5.4",
     "johnpbloch/wordpress": "5.9.3",
+    "wp-cli/wp-cli-bundle": "*",
     "wpackagist-plugin/advanced-custom-fields": "*",
     "wpackagist-plugin/posts-to-posts": "1.4.x",
     "wpackagist-plugin/wordpress-seo":">=7.0.2",

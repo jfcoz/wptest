@@ -38,6 +38,9 @@ if ($configExtra = getenv_docker('WORDPRESS_CONFIG_EXTRA', '')) {
 	eval($configExtra);
 }
 
+define ( 'WP_HOME', 'https://' . $_SERVER['HTTP_HOST'] . '/');
+define ( 'WP_SITEURL', 'https://' . $_SERVER['HTTP_HOST'] . '/wp');
+
 define ( 'WP_CONTENT_DIR', '/persist/') ;
 
 define( 'ABSPATH', __DIR__ . '/wp/' );
