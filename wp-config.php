@@ -38,11 +38,17 @@ if ($configExtra = getenv_docker('WORDPRESS_CONFIG_EXTRA', '')) {
 	eval($configExtra);
 }
 
-define ( 'WP_HOME', 'https://' . $_SERVER['HTTP_HOST'] . '/');
-define ( 'WP_SITEURL', 'https://' . $_SERVER['HTTP_HOST'] . '/wp');
+define( 'WP_HOME', 'https://' . $_SERVER['HTTP_HOST'] . '/');
+define( 'WP_SITEURL', 'https://' . $_SERVER['HTTP_HOST'] . '/wp');
 
-define ( 'WP_CONTENT_DIR', '/persist/') ;
+// content path
+define( 'WP_CONTENT_DIR', __DIR__ . '/wp-content') ;
+define( 'WP_CONTENT_URL', 'https://' . $_SERVER['HTTP_HOST'] . '/wp-content' );
 
+// disable auto update (read only filesystem, updated via docker image build)
+define( 'AUTOMATIC_UPDATER_DISABLED', true );
+
+// wordpress path
 define( 'ABSPATH', __DIR__ . '/wp/' );
 
 require_once ABSPATH . 'wp-settings.php';

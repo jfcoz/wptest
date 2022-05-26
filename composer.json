@@ -20,6 +20,7 @@
     "johnpbloch/wordpress": "5.9.3",
     "wp-cli/wp-cli-bundle": "*",
     "wpackagist-plugin/advanced-custom-fields": "*",
+    "wpackagist-plugin/flush-opcache": "*",
     "wpackagist-plugin/posts-to-posts": "1.4.x",
     "wpackagist-plugin/wordpress-seo":">=7.0.2",
     "wpackagist-plugin/wp-nested-pages": "*",
@@ -34,17 +35,14 @@
     "wpackagist-plugin/contact-form-7": "*",
     "wpackagist-plugin/flamingo": "*",
     "wpackagist-plugin/redirection": "*",
-    "wpackagist-plugin/matomo": "*"
+    "wpackagist-plugin/matomo": "*",
+    "wpackagist-theme/generatepress":"*"
   },
   "extra": {
     "wordpress-install-dir": "wp",
     "installer-paths": {
-      "wp-content/mu-plugins/{$name}/": [
-        "wpackagist-plugin/akismet"
-      ],
-      "wp-content/plugins/{$name}/": [
-        "type:wordpress-plugin"
-      ]
+      "wp-content/plugins/{$name}/": ["type:wordpress-plugin"],
+      "wp-content/themes/{$name}/": ["type:wordpress-theme"]
     }
   }
 }

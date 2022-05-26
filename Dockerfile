@@ -14,4 +14,6 @@ RUN ln -s $(pwd)/wp-content/vendor/wp-cli/wp-cli/bin/wp /usr/bin/wp
 ENV PAGER cat
 COPY --from=build /var/www/html/ .
 USER www-data
-ADD wp-config.php index.php .
+ADD wp-config.php index.php preload.php .
+# test preload
+RUN php -d opcache.enable_cli=1 preload.php
