@@ -11,6 +11,8 @@ USER root
 RUN docker-php-ext-install \
   mysqli \
   opcache
+RUN pecl install redis \
+  && docker-php-ext-enable redis
 # tests only
 RUN apt-get update && apt-get install -y vim
 RUN ln -s $(pwd)/wp-content/vendor/wp-cli/wp-cli/bin/wp /usr/bin/wp
