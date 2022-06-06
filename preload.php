@@ -5,6 +5,7 @@ declare( strict_types=1 );
 $wp_dir = __DIR__ . '/wp/';
 
 $preload_patterns = [
+	$wp_dir . "wp-includes/*.php",
 	$wp_dir . "wp-includes/Text/Diff/Renderer.php",
 	$wp_dir . "wp-includes/Text/Diff/Renderer/inline.php",
 	$wp_dir . "wp-includes/SimplePie/**/*.php",
@@ -12,7 +13,7 @@ $preload_patterns = [
 	$wp_dir . "wp-includes/Requests/**/*.php",
 	$wp_dir . "wp-includes/Requests/*.php",
 	$wp_dir . "wp-includes/**/class-*.php",
-	$wp_dir . "wp-includes/class-*.php",
+	//$wp_dir . "wp-includes/class-*.php",
 ];
 
 $exclusions = [
@@ -32,4 +33,8 @@ foreach ( $preload_patterns as $pattern ) {
 			opcache_compile_file( $file );
 		}
 	}
+}
+
+foreach ( glob( $wp_dir . "**.php") as $file ) {
+	opcache_compile_file( $file );
 }

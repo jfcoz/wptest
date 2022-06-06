@@ -35,7 +35,6 @@
     "wpackagist-plugin/contact-form-7": "*",
     "wpackagist-plugin/flamingo": "*",
     "wpackagist-plugin/redirection": "*",
-    "wpackagist-plugin/matomo": "*",
     "wpackagist-theme/generatepress":"*"
   },
   "extra": {
@@ -44,5 +43,11 @@
       "wp-content/plugins/{$name}/": ["type:wordpress-plugin"],
       "wp-content/themes/{$name}/": ["type:wordpress-theme"]
     }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "cp wp/index.php ./index.php",
+      "sed -i \"s/\\/wp-blog-header/\\/wp\\/wp-blog-header/g\" index.php"
+    ]
   }
 }

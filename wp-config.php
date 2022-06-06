@@ -38,11 +38,15 @@ if ($configExtra = getenv_docker('WORDPRESS_CONFIG_EXTRA', '')) {
 	eval($configExtra);
 }
 
-define( 'WP_HOME', 'https://' . $_SERVER['HTTP_HOST'] . '/');
+# https://developer.wordpress.org/apis/wp-config-php/#wp-siteurl
+# main WP url, with folder, without ending / (override db value)
 define( 'WP_SITEURL', 'https://' . $_SERVER['HTTP_HOST'] . '/wp');
 
+# blog url (visitors), without leading /
+define( 'WP_HOME', 'https://' . $_SERVER['HTTP_HOST']);
+
 // content path
-define( 'WP_CONTENT_DIR', __DIR__ . '/wp-content') ;
+define( 'WP_CONTENT_DIR', dirname(__FILE__) . '/wp-content') ;
 define( 'WP_CONTENT_URL', 'https://' . $_SERVER['HTTP_HOST'] . '/wp-content' );
 
 // disable auto update (read only filesystem, updated via docker image build)
