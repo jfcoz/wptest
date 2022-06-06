@@ -1,4 +1,4 @@
-FROM --platform=$TARGETPLATFORM php:7.4-fpm AS build
+FROM --platform=$TARGETPLATFORM php:8.1-fpm AS build
 RUN apt-get update && apt-get install -y zip git
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 ADD composer.json .
@@ -6,7 +6,7 @@ USER www-data
 RUN composer install \
  && composer run-script post-install-cmd
 
-FROM --platform=$TARGETPLATFORM php:7.4-fpm AS prod
+FROM --platform=$TARGETPLATFORM php:8.1-fpm AS prod
 USER root
 RUN docker-php-ext-install \
   mysqli \
