@@ -1,4 +1,7 @@
 <?php
+
+define( 'WP_CACHE', true ); // Simple Cache
+
 require 'wp-content/vendor/autoload.php';
 
 function getenv_docker($env, $default) {
