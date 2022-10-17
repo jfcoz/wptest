@@ -17,7 +17,7 @@
   },
   "require": {
     "php": ">=5.4",
-    "johnpbloch/wordpress": "6.0.1",
+    "johnpbloch/wordpress": "6.0.3",
     "wp-cli/wp-cli-bundle": "2.6.0",
     "wpackagist-plugin/advanced-custom-fields": "5.12.3",
     "wpackagist-plugin/flush-opcache": "4.1.4",
