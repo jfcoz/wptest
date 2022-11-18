@@ -36,7 +36,7 @@
     "wpackagist-plugin/flamingo": "2.3",
     "wpackagist-plugin/redirection": "5.3.4",
     "wpackagist-plugin/simple-cache": "2.0.0",
-    "wpackagist-theme/generatepress":"3.2.1",
+    "wpackagist-theme/generatepress":"3.2.3",
     "humanmade/s3-uploads":"3.0.4"
   },
   "extra": {
