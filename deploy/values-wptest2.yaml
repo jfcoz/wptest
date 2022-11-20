@@ -1,0 +1,37 @@
+image:
+  tag: latest
+  pullPolicy: Always
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    #nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+  hosts:
+  - host: wptest2.k3s-prod.francoz.net
+    paths:
+    - path: /
+      pathType: Prefix
+  tls:
+    - hosts:
+        - wptest2.k3s-prod.francoz.net
+
+database:
+  host: wptest2-mariadb
+  name: change_me
+  password: change_me
+  user: root
+
+redis:
+  host: wptest2-redis
+
+bucket:
+  provider: other-s3
+  existingSecret: wordpress-upload
+  # TODO: use existingSecret or theses values
+  # accessKey: change_me
+  # secret: change_me
+  name: wordpress-upload
+  endpoint: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc
+  usePathStyle: true
