@@ -13,43 +13,44 @@
     }
   ],
   "config"      : {
-    "vendor-dir": "wp-content/vendor"
+    "vendor-dir": "wp-content/vendor",
+    "allow-plugins": {
+      "composer/installers": true,
+      "johnpbloch/wordpress-core-installer": true,
+      "boxuk/wp-muplugin-loader": true
+    }
   },
   "require": {
-    "php": ">=5.4",
+    "php": ">=8.2",
     "johnpbloch/wordpress": "6.1.1",
     "wp-cli/wp-cli-bundle": "2.7.1",
-    "wpackagist-plugin/advanced-custom-fields": "6.0.5",
+    "boxuk/wp-muplugin-loader": "2.0.0",
     "wpackagist-plugin/flush-opcache": "4.1.4",
-    "wpackagist-plugin/posts-to-posts": "1.7",
-    "wpackagist-plugin/wordpress-seo":"19.10",
-    "wpackagist-plugin/wp-nested-pages": "3.2.3",
-    "wpackagist-plugin/acf-to-wp-api": "1.4.0",
-    "wpackagist-plugin/custom-post-type-ui": "1.13.1",
-    "wpackagist-plugin/simple-custom-post-order": "2.5.6",
-    "wpackagist-plugin/wordpress-importer": "0.8",
-    "wpackagist-plugin/wp-rest-api-v2-menus": "0.12.1",
     "wpackagist-plugin/jwt-authentication-for-wp-rest-api": "1.3.2",
-    "wpackagist-plugin/wp-all-import": "3.7.1",
-    "wpackagist-plugin/wp-maximum-upload-file-size": "1.0.9",
-    "wpackagist-plugin/contact-form-7": "5.6.4",
-    "wpackagist-plugin/flamingo": "2.3",
-    "wpackagist-plugin/redirection": "5.3.5",
-    "wpackagist-plugin/simple-cache": "2.0.0",
-    "wpackagist-theme/generatepress":"3.2.3",
-    "humanmade/s3-uploads":"3.0.4"
+    "wpackagist-plugin/redis-cache": "2.2.2",
+    "wpackagist-plugin/ilab-media-tools": "4.5.11",
+    "wpackagist-theme/generatepress":"3.2.3"
   },
   "extra": {
     "wordpress-install-dir": "wp",
     "installer-paths": {
-      "wp-content/plugins/{$name}/": ["type:wordpress-plugin"],
-      "wp-content/themes/{$name}/": ["type:wordpress-theme"]
+      "wp-content/mu-plugins/{$name}/": [
+        "type:wordpress-muplugin",
+        "wpackagist-plugin/redis-cache"
+      ],
+      "wp-content/plugins/{$name}/": [
+        "type:wordpress-plugin"
+      ],
+      "wp-content/themes/{$name}/": [
+        "type:wordpress-theme"
+      ]
     }
   },
   "scripts": {
     "post-install-cmd": [
       "cp wp/index.php ./index.php",
-      "sed -i \"s/\\/wp-blog-header/\\/wp\\/wp-blog-header/g\" index.php"
+      "sed -i \"s/\\/wp-blog-header/\\/wp\\/wp-blog-header/g\" index.php",
+      "rm -rf wp/wp-content/"
     ]
   }
 }

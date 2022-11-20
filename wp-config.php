@@ -56,7 +56,7 @@ define( 'WP_CONTENT_URL', 'https://' . $_SERVER['HTTP_HOST'] . '/wp-content' );
 define( 'AUTOMATIC_UPDATER_DISABLED', true );
 
 // wordpress path
-define( 'ABSPATH', __DIR__ . '/wp/' );
+//define( 'ABSPATH', __DIR__ . '/wp/' );
 
 //  wp redis plugin
 
