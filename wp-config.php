@@ -1,4 +1,7 @@
 <?php
+
+define( 'WP_CACHE', true ); // Simple Cache
+
 require 'wp-content/vendor/autoload.php';
 
 function getenv_docker($env, $default) {
@@ -38,7 +41,44 @@ if ($configExtra = getenv_docker('WORDPRESS_CONFIG_EXTRA', '')) {
 	eval($configExtra);
 }
 
+# https://developer.wordpress.org/apis/wp-config-php/#wp-siteurl
+# main WP url, with folder, without ending / (override db value)
+define( 'WP_SITEURL', 'https://' . $_SERVER['HTTP_HOST'] . '/wp');
+
+# blog url (visitors), without leading /
+define( 'WP_HOME', 'https://' . $_SERVER['HTTP_HOST']);
+
+// content path
+define( 'WP_CONTENT_DIR', dirname(__FILE__) . '/wp-content') ;
+define( 'WP_CONTENT_URL', 'https://' . $_SERVER['HTTP_HOST'] . '/wp-content' );
+
+// disable auto update (read only filesystem, updated via docker image build)
+define( 'AUTOMATIC_UPDATER_DISABLED', true );
+
+// wordpress path
 define( 'ABSPATH', __DIR__ . '/wp/' );
+
+//  wp redis plugin
+
+define( 'WP_REDIS_HOST', getenv_docker('WP_REDIS_HOST','redis') );
+define( 'WP_REDIS_PORT', getenv_docker('WP_REDIS_PORT',6379) );
+// define( 'WP_REDIS_PASSWORD', 'secret' );
+define( 'WP_REDIS_TIMEOUT', 1 );
+define( 'WP_REDIS_READ_TIMEOUT', 1 );
+
+// change the database for each site to avoid cache collisions
+define( 'WP_REDIS_DATABASE', 0 );
+
+// supported clients: `phpredis`, `credis`, `predis` and `hhvm`
+define( 'WP_REDIS_CLIENT', 'phpredis' );
+
+// automatically delete cache keys after 7 days
+// define( 'WP_REDIS_MAXTTL', 60 * 60 * 24 * 7 );
+
+// bypass the object cache, useful for debugging
+// define( 'WP_REDIS_DISABLED', true );
+
+
 
 require_once ABSPATH . 'wp-settings.php';
 

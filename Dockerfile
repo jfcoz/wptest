@@ -1,10 +1,26 @@
-FROM --platform=$BUILDPLATFORM php:7.4-fpm AS build
+FROM --platform=$TARGETPLATFORM php:8.1-fpm AS build
 RUN apt-get update && apt-get install -y zip git
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 ADD composer.json .
-RUN composer install
+USER www-data
+RUN composer install \
+ && composer run-script post-install-cmd
 
-FROM --platform=$BUILDPLATFORM php:7.4-fpm AS prod
-RUN docker-php-ext-install mysqli
+FROM --platform=$TARGETPLATFORM php:8.1-fpm AS prod
+USER root
+RUN docker-php-ext-install \
+  mysqli \
+  opcache
+RUN pecl install redis \
+  && docker-php-ext-enable redis
+# tests only
+RUN apt-get update && apt-get install -y vim
+RUN ln -s $(pwd)/wp-content/vendor/wp-cli/wp-cli/bin/wp /usr/bin/wp
+ENV PAGER cat
 COPY --from=build /var/www/html/ .
-ADD wp-config.php .
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+USER www-data
+ADD --chown=www-data:www-data composer.json .
+ADD --chown=www-data:www-data wp-config.php preload.php .
+# test preload
+RUN php -d opcache.enable_cli=1 preload.php
