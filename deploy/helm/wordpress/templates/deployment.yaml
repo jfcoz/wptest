@@ -40,36 +40,54 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: WORDPRESS_DB_NAME
-              value: {{ required "database.name" .Values.database.name }}
+              value: {{ required "mariadb.database" .Values.mariadb.database }}
             - name: WORDPRESS_DB_USER
-              value: {{ required "database.name" .Values.database.user }}
+              value: {{ required "mariadb.username" .Values.mariadb.username }}
             - name: WORDPRESS_DB_PASSWORD
-              value: {{ required "database.name" .Values.database.password }}
+              value: {{ required "mariadb.password" .Values.mariadb.password }}
             - name: WORDPRESS_DB_HOST
-              value: {{ required "database.name" .Values.database.host }}
-            - name: WP_REDIS_HOST
-              value: {{ required "redis.host" .Values.redis.host }}
-            - name: WP_REDIS_PORT
-              value: {{ .Values.redis.port | default 6379 | quote }}
-            - name: MCLOUD_STORAGE_S3_ACCESS_KEY
+              value: {{ if .Values.mariadb.enabled }}{{ template "mariadb.fullname" .Subcharts.mariadb }}{{ else }}{{ required "mariadb.host" .Values.database.host }}{{ end }}
+            - name: REDIS_HOST
+              value: {{ if .Values.redis.enabled }}{{ template "redis.fullname" .Subcharts.redis }}{{ else }}{{ required "redis.host" .Values.redis.host }}{{ end }}
+            - name: REDIS_PORT
+              value: {{ .Values.redis.port | quote }}
+            - name: REDIS_DATABASE
+              value: {{ .Values.redis.database | quote }}
+            - name: S3_ACCESS_KEY
+              {{- if .Values.bucket.enabled }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ required "bucket.existingSecret" .Values.bucket.existingSecret }}
+                  {{- if eq .Values.bucket.provisionner.type "ceph" }}
+                  name: {{ template "bucket.fullname" .Subcharts.bucket }}
                   key: AWS_ACCESS_KEY_ID
+                  {{- end }}
                   optional: false 
-            - name: MCLOUD_STORAGE_S3_SECRET
+              {{- else }}
+              value: {{ .Values.bucket.accessKey | quote }}
+              {{- end }}
+            - name: S3_SECRET
+              {{- if .Values.bucket.enabled }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ required "bucket.existingSecret" .Values.bucket.existingSecret }}
+                  {{- if eq .Values.bucket.provisionner.type "ceph" }}
+                  name: {{ template "bucket.fullname" .Subcharts.bucket }}
                   key: AWS_SECRET_ACCESS_KEY
+                  {{- end }}
                   optional: false 
-            - name: MCLOUD_STORAGE_PROVIDER
+              {{- else }}
+              value: {{ .Values.bucket.secretKey | quote }}
+              {{- end }}
+            - name: S3_PROVISIONNER
+              value: {{ required "bucket.provisionner.type" .Values.bucket.provisionner.type | quote }}
+            - name: S3_PROVIDER
               value: {{ required "bucket.provider" .Values.bucket.provider | quote }}
-            - name: MCLOUD_STORAGE_S3_BUCKET
+            - name: S3_BUCKET
               value: {{ required "bucket.name" .Values.bucket.name | quote }}
-            - name: MCLOUD_STORAGE_S3_ENDPOINT
+            - name: S3_REGION
+              value: {{ required "bucket.region" .Values.bucket.region | quote }}
+            - name: S3_ENDPOINT
               value: {{ required "bucket.endpoint" .Values.bucket.endpoint | quote }}
-            - name: MCLOUD_STORAGE_S3_USE_PATH_STYLE_ENDPOINT
+            - name: S3_USE_PATH_STYLE
               value: {{ required "bucket.usePathStyle" .Values.bucket.usePathStyle | quote }}
             - name: MCLOUD_TOOL_ENABLED_STORAGE
               value: "true"

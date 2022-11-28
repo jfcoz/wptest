@@ -17,21 +17,20 @@ ingress:
     - hosts:
         - wptest2.k3s-prod.francoz.net
 
-database:
-  host: wptest2-mariadb
-  name: change_me
-  password: change_me
-  user: root
+resources:
+  requests:
+    memory: 256M
+
+mariadb:
+  enabled: true
 
 redis:
-  host: wptest2-redis
+  enabled: true
 
 bucket:
+  provisionner:
+    type: ceph
   provider: other-s3
-  existingSecret: wordpress-upload
-  # TODO: use existingSecret or theses values
-  # accessKey: change_me
-  # secret: change_me
   name: wordpress-upload
-  endpoint: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc
+  endpoint: https://objects.k3s-prod.francoz.net
   usePathStyle: true

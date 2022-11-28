@@ -41,9 +41,13 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: MARIADB_ROOT_PASSWORD
-              value: {{ required "mariadb.rootPassword" .Values.mariadb.rootPassword }}
+              value: {{ required "rootPassword" .Values.rootPassword }}
+            - name: MARIADB_USER
+              value: {{ required "username" .Values.username }}
+            - name: MARIADB_PASSWORD
+              value: {{ required "password" .Values.password }}
             - name: MARIADB_DATABASE
-              value: {{ required "mariadb.database" .Values.mariadb.database }}
+              value: {{ required "database" .Values.database }}
           ports:
             - name: mysql
               containerPort: 3306
