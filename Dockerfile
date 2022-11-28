@@ -6,10 +6,6 @@ RUN install-php-extensions \
   exif \
   mysqli \
   opcache
-RUN docker-php-ext-install \
-  exif \
-  mysqli \
-  opcache
 RUN pecl install redis \
   && docker-php-ext-enable redis
 # disable https in Caddy
@@ -37,4 +33,6 @@ COPY --from=build /app /app/public
 RUN chown www-data: /app/public
 RUN ln -s $(pwd)/public/wp-content/vendor/wp-cli/wp-cli/bin/wp /usr/bin/wp
 ADD --chown=www-data:www-data wp-config.php preload.php public/
+ADD --chown=www-data:www-data s3-endpoint.php public/wp-content/mu-plugins/
+RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 USER www-data
