@@ -41,16 +41,22 @@ if ($configExtra = getenv_docker('WORDPRESS_CONFIG_EXTRA', '')) {
 	eval($configExtra);
 }
 
+if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+	define('URL_SCHEME','https://');
+} else {
+	define('URL_SCHEME','http://');
+}
+
 # https://developer.wordpress.org/apis/wp-config-php/#wp-siteurl
 # main WP url, with folder, without ending / (override db value)
-define( 'WP_SITEURL', 'https://' . $_SERVER['HTTP_HOST'] . '/wp');
+define( 'WP_SITEURL', URL_SCHEME . $_SERVER['HTTP_HOST'] . '/wp');
 
 # blog url (visitors), without leading /
-define( 'WP_HOME', 'https://' . $_SERVER['HTTP_HOST']);
+define( 'WP_HOME', URL_SCHEME . $_SERVER['HTTP_HOST']);
 
 // content path
 define( 'WP_CONTENT_DIR', dirname(__FILE__) . '/wp-content') ;
-define( 'WP_CONTENT_URL', 'https://' . $_SERVER['HTTP_HOST'] . '/wp-content' );
+define( 'WP_CONTENT_URL', URL_SCHEME . $_SERVER['HTTP_HOST'] . '/wp-content' );
 
 // disable auto update (read only filesystem, updated via docker image build)
 define( 'AUTOMATIC_UPDATER_DISABLED', true );
