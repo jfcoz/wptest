@@ -12,6 +12,10 @@ mariadb:
   rootPassword: change_me
   database: change_me
 
+storage:
+  className: ceph-block
+  size: 1G
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
