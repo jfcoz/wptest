@@ -24,7 +24,6 @@ RUN composer install \
 #RUN find -name redis-object-cache && exit 1
 
 FROM --platform=$TARGETPLATFORM base as prod
-COPY --from=composer /usr/bin/composer /usr/bin/composer
 #RUN chown www-data: /var/www
 #WORKDIR /var/www/html
 #COPY --from=build /var/www/html/ .
