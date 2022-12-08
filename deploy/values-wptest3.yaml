@@ -1,0 +1,47 @@
+image:
+  tag: latest
+  pullPolicy: Always
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    #nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+  hosts:
+  - host: wptest3.local
+    paths:
+    - path: /
+      pathType: Prefix
+  tls:
+    - hosts:
+        - wptest3.local
+
+autoscaling:
+  enabled: false
+
+resources:
+  requests:
+    memory: 256M
+
+mariadb:
+  enabled: true
+  storage:
+    className: standard
+    size: 1G
+
+
+redis:
+  enabled: true
+
+bucket:
+  enabled: false
+  provisionner:
+    type: ceph
+  provider: other-s3
+  # test bucket
+  name: wordpress-upload
+  endpoint: https://objects.k3s-prod.francoz.net
+  usePathStyle: true
+  accessKey: HC3E4YJ40XWIJERF80C2
+  secretKey: J8YE3yRCTo4fA95nDdphqkjyycmY5DZO7XtAfZxe
