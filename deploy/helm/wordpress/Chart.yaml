@@ -27,12 +27,12 @@ dependencies:
   - name: bucket
     version: 1
     repository: "file://../bucket"
-    when: bucket.enabled
+    condition: bucket.enabled
   - name: redis
     version: 7
     repository: "file://../redis"
-    when: redis.enabled
+    condition: redis.enabled
   - name: mariadb
     version: 10
     repository: "file://../mariadb"
-    when: mariadb.enabled
+    condition: mariadb.enabled
