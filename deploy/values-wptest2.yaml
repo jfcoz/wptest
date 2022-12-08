@@ -17,6 +17,9 @@ ingress:
     - hosts:
         - wptest2.k3s-prod.francoz.net
 
+autoscaling:
+  enabled: false
+
 resources:
   requests:
     memory: 256M
