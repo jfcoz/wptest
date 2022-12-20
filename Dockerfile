@@ -17,16 +17,11 @@ RUN apt-get update && apt-get install -y zip git
 COPY --from=composer/composer:2-bin /composer /usr/bin/composer
 RUN chown www-data: .
 USER www-data
-#WORKDIR /var/www/html
 ADD --chown=www-data:www-data composer.json .
 RUN composer install \
  && composer run-script post-install-cmd
-#RUN find -name redis-object-cache && exit 1
 
 FROM --platform=$TARGETPLATFORM base as prod
-#RUN chown www-data: /var/www
-#WORKDIR /var/www/html
-#COPY --from=build /var/www/html/ .
 COPY --from=build /app /app/public
 RUN chown www-data: /app/public
 RUN ln -s $(pwd)/public/wp-content/vendor/wp-cli/wp-cli/bin/wp /usr/bin/wp
