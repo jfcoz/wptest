@@ -1,5 +1,4 @@
-FROM --platform=$TARGETPLATFORM jfcoz/frankenphp:fix-dont-flush-too-early AS base
-#FROM --platform=$TARGETPLATFORM dunglas/frankenphp:fix-dont-flush-too-early AS base
+FROM --platform=$TARGETPLATFORM dunglas/frankenphp AS base
 USER root
 RUN install-php-extensions \
   gd \
