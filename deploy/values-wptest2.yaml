@@ -17,6 +17,9 @@ ingress:
     - hosts:
         - wptest2.k3s-prod.francoz.net
 
+prometheus:
+  blackboxProberUrl: blackbox-prometheus-blackbox-exporter.infra-blackbox-exporter
+
 autoscaling:
   enabled: false
 
@@ -26,9 +29,15 @@ resources:
 
 mariadb:
   enabled: true
+  resources:
+    requests:
+      memory: 256Mi
 
 redis:
   enabled: true
+  resources:
+    requests:
+      memory: 10Mi
 
 bucket:
   provisionner:
