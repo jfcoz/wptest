@@ -36,6 +36,7 @@
     "wp-cli/wp-cli-bundle": "2.7.1",
     "boxuk/wp-muplugin-loader": "2.0.0",
     "wpackagist-plugin/redis-cache": "2.2.2",
+    "wpackagist-theme/twentytwentythree": "1.0",
     "humanmade/s3-uploads": "3.0.6",
     "koodimonni-language/fr_fr": "*"
   },
