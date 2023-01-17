@@ -35,12 +35,12 @@ redis:
   enabled: true
 
 bucket:
-  enabled: false
+  enabled: true
   provisionner:
     type: ceph
   provider: other-s3
   # test bucket
-  name: wordpress-upload
+  name: wptest3-upload
   endpoint: https://objects.k3s-prod.francoz.net
   usePathStyle: true
   accessKey: HC3E4YJ40XWIJERF80C2
