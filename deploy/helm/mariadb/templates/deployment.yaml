@@ -41,11 +41,19 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: MARIADB_ROOT_PASSWORD
-              value: {{ required "rootPassword" .Values.rootPassword }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "mariadb.fullname" . }}
+                  key: MARIADB_ROOT_PASSWORD
+                  optional: false
             - name: MARIADB_USER
               value: {{ required "username" .Values.username }}
             - name: MARIADB_PASSWORD
-              value: {{ required "password" .Values.password }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "mariadb.fullname" . }}
+                  key: MARIADB_PASSWORD
+                  optional: false
             - name: MARIADB_DATABASE
               value: {{ required "database" .Values.database }}
           ports:

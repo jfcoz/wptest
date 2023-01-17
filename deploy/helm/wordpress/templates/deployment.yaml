@@ -53,20 +53,37 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+            {{- if .Values.mariadb.enabled }}
+            - name: WORDPRESS_DB_HOST
+              value: {{ template "mariadb.fullname" .Subcharts.mariadb }}
+            - name: WORDPRESS_DB_NAME
+              value: {{ required "mariadb.database" .Values.mariadb.database }}
+            - name: WORDPRESS_DB_USER
+              value: {{ required "mariadb.username" .Values.mariadb.username }}
+            - name: WORDPRESS_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "mariadb.fullname" .Subcharts.mariadb }}
+                  key: MARIADB_PASSWORD
+                  optional: false
+              {{- else }}
+            - name: WORDPRESS_DB_HOST
+              value: {{ required "mariadb.host" .Values.database.host }}
             - name: WORDPRESS_DB_NAME
               value: {{ required "mariadb.database" .Values.mariadb.database }}
             - name: WORDPRESS_DB_USER
               value: {{ required "mariadb.username" .Values.mariadb.username }}
             - name: WORDPRESS_DB_PASSWORD
               value: {{ required "mariadb.password" .Values.mariadb.password }}
-            - name: WORDPRESS_DB_HOST
-              value: {{ if .Values.mariadb.enabled }}{{ template "mariadb.fullname" .Subcharts.mariadb }}{{ else }}{{ required "mariadb.host" .Values.database.host }}{{ end }}
+            {{- end }}
+              {{- if .Values.redis.enabled }}
             - name: REDIS_HOST
-              value: {{ if .Values.redis.enabled }}{{ template "redis.fullname" .Subcharts.redis }}{{ else }}{{ required "redis.host" .Values.redis.host }}{{ end }}
+              value: {{ template "redis.fullname" .Subcharts.redis }}
             - name: REDIS_PORT
               value: {{ .Values.redis.port | quote }}
             - name: REDIS_DATABASE
               value: {{ .Values.redis.database | quote }}
+              {{- end }}
             - name: S3_ACCESS_KEY
               {{- if .Values.bucket.enabled }}
               valueFrom:
@@ -75,7 +92,7 @@ spec:
                   name: {{ template "bucket.fullname" .Subcharts.bucket }}
                   key: AWS_ACCESS_KEY_ID
                   {{- end }}
-                  optional: false 
+                  optional: false
               {{- else }}
               value: {{ .Values.bucket.accessKey | quote }}
               {{- end }}
@@ -87,7 +104,7 @@ spec:
                   name: {{ template "bucket.fullname" .Subcharts.bucket }}
                   key: AWS_SECRET_ACCESS_KEY
                   {{- end }}
-                  optional: false 
+                  optional: false
               {{- else }}
               value: {{ .Values.bucket.secretKey | quote }}
               {{- end }}

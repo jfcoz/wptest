@@ -6,4 +6,4 @@ helm upgrade --install \
 	--atomic \
 	--debug \
 	-f values-wptest3.yaml \
-	wptest2 helm/wordpress/
+	wptest3 helm/wordpress/
