@@ -5,7 +5,7 @@ FROM composer:2.5 as build
 COPY composer.json ./
 RUN composer install --ignore-platform-reqs
 
-FROM wordpress:6.2
+FROM wordpress:6.4
 # Install the opentelemetry and protobuf extensions
 RUN pecl install opentelemetry-beta protobuf grpc
 COPY otel.php.ini $PHP_INI_DIR/conf.d/.
