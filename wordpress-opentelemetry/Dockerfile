@@ -18,3 +18,5 @@ COPY --from=build /app/vendor /var/www/otel
 
 # Use the default production configuration
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+
+COPY opcache.ini /usr/local/etc/php/conf.d/
