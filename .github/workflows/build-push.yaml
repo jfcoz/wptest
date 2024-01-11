@@ -35,9 +35,10 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            jfcoz/wordpress-composer
+            ${{ github.repository }}
           # generate Docker tags based on the following events/attributes
           tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
             type=schedule
             type=ref,event=branch
             type=ref,event=pr
